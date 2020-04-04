@@ -6,6 +6,7 @@
         <div @click="logout" v-if="loggedIn" class="logout-link">Logout</div>
         <nuxt-link v-else to="login">Login</nuxt-link>
         <nuxt-link to="secret">Secret</nuxt-link>
+        <nuxt-link to="kitchen">Cocina</nuxt-link>
       </div>
     </div>
     <nuxt />

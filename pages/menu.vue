@@ -1,18 +1,20 @@
 <template lang="pug">
+div
   .d-flex
     .container-menu
       h1 MENÚ
-      .d-flex(v-for="filter in filters")
-        b-button.btn-filter(@click="filterType(filter)") {{filter}}
+      .d-flex()
+        b-button.btn-filter(v-for="filter in filters" @click="filterType(filter)") {{filter}}
       .d-flex.flex-wrap
-        b-card.cardProd(v-for="prod in prodFilters" :header="prod.nombre")
-          .d-flex.flex-column.align-items-center
-            img.widthImg(:src="prod.imagen")
-            b-button.btn-precio $ {{prod.precio}}.00
-          em(slot="footer")
-            .d-flex
-              //- b-form-spinbutton(:id="`btn-${prod.nombre}`" v-model="prod.cantidad" min="0" type="number" @change="addCart(prod, `btn-${prod.nombre}`)")
-              b-button(@click="addCart(prod, `btn-${prod.nombre}`)") Add to cart
+        .box(v-for="prod in prodFilters")
+          img.widthImg(:src="prod.imagen")
+          i(@click="addCart(prod, `btn-${prod.nombre}`)") +
+          h2 {{prod.nombre}}
+          p $ {{prod.precio}}.00
+            //- b-button.btn-precio $ {{prod.precio}}.00
+          //- em(slot="footer")
+          //-   .d-flex
+          //-     b-button(@click="addCart(prod, `btn-${prod.nombre}`)") Add to cart
     .reserve
       Reserve(:reserva="cart")
 
@@ -52,18 +54,17 @@ export default {
   methods: {
     ...mapActions("cart", ["SET_CART"]),
     filterType(type) {
-      const allProd = [...this.breakfast]
-      console.log(allProd, 'all')
+      const allProd = [...this.breakfast];
+      console.log(allProd, "all");
       const arr = allProd.filter((prod) => prod.subtipo === type);
-      console.log(arr, 'filter')
-      this.prodFilters = [...arr]
-      console.log(this.prodFilters,'poiuhu')
-
+      console.log(arr, "filter");
+      this.prodFilters = [...arr];
+      console.log(this.prodFilters, "poiuhu");
     },
     addCart(item, id) {
       // item.cantidad = 1
       // item.subtotal = item.cantidad*item.precio
-      this.cart.push(item)
+      this.cart.push(item);
       // const verify = this.cart.some((el) => el.nombre === item.nombre);
       // console.log(verify, this.cart)
       // if (verify) {
@@ -88,20 +89,54 @@ export default {
 .container-menu {
   width: 60%;
 }
-h1{
+h1 {
   text-align: center;
 }
-.cardProd {
-  width: 22%;
-  margin: 2%;
+.box {
+  width: 230px;
+  background-color: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  margin: 0 10px;
+  position: relative;
 }
-.btn-filter{
-  background-color: #715AFF;
+.box img {
+  width: 230px;
+}
+.box i {
+  width: 50px;
+  height: 50px;
+  background: #ed277f;
+  color: #ffffff;
+  border-radius: 25px;
+  text-align: center;
+  line-height: 50px;
+  font-size: 1.4rem;
+  position: absolute;
+  right: 20px;
+  top: 150px;
+  box-shadow: 0 0 4px 2px rgba(80, 80, 80, 0.1);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.box i:hover {
+  transform: scale(1.05);
+}
+
+.box h2 {
+  margin-left: 20px;
+}
+.boxp {
+  margin-left: 20px;
+}
+.btn-filter {
+  background-color: #715aff;
   color: white;
   text-transform: uppercase;
 }
-.btn-precio{
-  background-color: #55C1FF;
+.btn-precio {
+  background-color: #55c1ff;
   color: white;
 }
 .widthImg {
@@ -109,9 +144,19 @@ h1{
   width: 150px;
 }
 .reserve {
-  width: 40%;
-  /* position: fixed;
+  display: none;
+}
+
+@media screen and (min-width: 764px) {
+  .reserve {
+    display: block;
+    width: 40%;
+    /* position: fixed;
   right: 0; */
-  margin:2%;
+    margin: 2%;
+  }
+  .responsiveCart{
+    display: none;
+  }
 }
 </style>

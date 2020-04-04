@@ -3,33 +3,34 @@
     label Nombre:
       b-form-input(v-model="cliente")
     b-table(:items="reservas" :fields="fields")
-      //- template(v-slot:cell(cantidad)="{ item, value }")
-      //-   b-form-input(v-model="item.cantidad" type="number" @change="addQty(item)")
+      //- template(v-slot:cell(cantidad)="data")
+      //-   b-form-input(v-model="data.item.cantidad" type="number" @change="addQty(data.item)")
+      //-@change="addQty(item)"
+      //- template(v-slot:cell(cantidad)="data")
+      //-   div.qty-minus(v-on:click="minusQty(data.item)") -
+      //-     div.qty {{data.item.cantidad}}
+      //-   div.qty-plus(v-on:click="plusQty(data.item)") +
       template(v-slot:cell(precio)="data")
         p S/. {{data.item.precio}}.00
       template(v-slot:cell(subtotal)="data")
         p S/. {{data.item.subtotal}}.00
 
     p {{total}}
+    b-button(@click="sendOrder(reservas, cliente)") Enviar pedido
 
 
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-
+import { StoreDB } from "../plugins/firebase";
 export default {
   props: ["reserva"],
   data() {
     return {
       fields: ["cantidad", "nombre", "precio", "subtotal"],
-      dataReserve: [],
       cliente: "",
     };
-  },
-  updated() {
-    console.log(this.reserva);
-    this.dataReserve = this.reserva;
   },
   computed: {
     ...mapGetters("cart", ["getCart"]),
@@ -41,7 +42,7 @@ export default {
         element.subtotal = element.cantidad * element.precio;
       });
 
-      return this.getUniqueListBy(newArr, 'nombre');
+      return this.getUniqueListBy(newArr, "nombre");
     },
     total() {
       return this.reserva.reduce(function (acc, obj) {
@@ -49,19 +50,29 @@ export default {
       }, 0);
     },
   },
-
-  mounted() {
-    // console.log(this.reserva);
-    this.dataReserve = this.reserva;
-  },
   methods: {
     getUniqueListBy(arr, key) {
       return [...new Map(arr.map((item) => [item[key], item])).values()];
     },
     addQty(item) {
+      console.log(item, 'it')
       // item.cantidad = parseInt(parseInt(item.cantidad) + 1)
-      // item.subtotal = item.cantidad * item.precio
-      console.log(item, this.dataReserve, "item");
+      item.subtotal = item.cantidad * item.precio
+      // console.log(item, this.dataReserve, "item");
+    },
+    sendOrder(reservas, cliente) {
+      console.log(reservas,cliente)
+      StoreDB.collection("ordenes")
+        .add({
+          reservas: reservas,
+          cliente: cliente,
+        })
+        .then(function (docRef) {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function (error) {
+          console.error("Error adding document: ", error);
+        });
     },
   },
   // watch: {

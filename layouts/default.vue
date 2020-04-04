@@ -55,11 +55,13 @@ export default {
 
 }
 .main{
-  margin: 20px;
+  background-color: #102E4A;
+  /* margin: 20px; */
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  height: 12vh;
 }
 .main-links{
   width: 30%;

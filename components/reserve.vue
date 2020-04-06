@@ -1,8 +1,8 @@
 <template lang="pug">
-  b-card(v-if="reserva.length > 0" header="Pedido")
+  b-card(header="Pedido")
     label Nombre:
       b-form-input(v-model="cliente")
-    b-table(:items="reservas" :fields="fields")
+    b-table(v-if="reserva.length > 0" :items="reservas" :fields="fields")
       //- template(v-slot:cell(cantidad)="data")
       //-   b-form-input(v-model="data.item.cantidad" type="number" @change="addQty(data.item)")
       //-@change="addQty(item)"
@@ -14,7 +14,7 @@
         p S/. {{data.item.precio}}.00
       template(v-slot:cell(subtotal)="data")
         p S/. {{data.item.subtotal}}.00
-
+    p(v-else) Agrega el menú
     p {{total}}
     b-button(@click="sendOrder(reservas, cliente)") Enviar pedido
 
@@ -66,6 +66,8 @@ export default {
         .add({
           reservas: reservas,
           cliente: cliente,
+          total: this.total,
+          estado: 'PENDIENTE'
         })
         .then(function (docRef) {
           console.log("Document written with ID: ", docRef.id);

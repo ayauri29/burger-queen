@@ -1,9 +1,9 @@
 <template lang="pug">
-div
+.container
   .d-flex
     .container-menu
       h1 MENÚ
-      .d-flex()
+      .d-flex.div-filters
         b-button.btn-filter(v-for="filter in filters" @click="filterType(filter)") {{filter}}
       .d-flex.flex-wrap
         .box(v-for="prod in prodFilters")
@@ -26,26 +26,26 @@ import { StoreDB } from "../plugins/firebase";
 import Reserve from "../components/reserve";
 export default {
   components: {
-    Reserve,
+    Reserve
   },
   data() {
     return {
       prodFilters: [],
-      filters: ["desayuno", "almuerzo y cena"],
-      cart: [],
+      filters: ["desayuno", "acompañamiento", "hamburguesa", "bebida"],
+      cart: []
     };
   },
   async asyncData() {
     let prodArray = [];
     await StoreDB.collection("desayuno")
       .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach(function (doc) {
+      .then(querySnapshot => {
+        querySnapshot.forEach(function(doc) {
           prodArray.push(doc.data());
         });
       });
     return {
-      breakfast: prodArray,
+      breakfast: prodArray
     };
   },
   mounted() {
@@ -56,7 +56,7 @@ export default {
     filterType(type) {
       const allProd = [...this.breakfast];
       console.log(allProd, "all");
-      const arr = allProd.filter((prod) => prod.subtipo === type);
+      const arr = allProd.filter(prod => prod.tipo === type);
       console.log(arr, "filter");
       this.prodFilters = [...arr];
       console.log(this.prodFilters, "poiuhu");
@@ -80,14 +80,27 @@ export default {
       //   item.subtotal = item.precio * item.cantidad;
       //   this.cart.push(item);
       // }
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css?family=Be+Vietnam&display=swap");
+* {
+  font-family: "Be Vietnam", sans-serif;
+}
+.container {
+  /* background-color: #292929; */
+  margin: 0;
+  min-width: 100%;
+}
 .container-menu {
   width: 60%;
+}
+.div-filters {
+  margin: 4%;
+  justify-content: space-evenly;
 }
 h1 {
   text-align: center;
@@ -97,8 +110,9 @@ h1 {
   background-color: #fff;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   display: inline-block;
-  margin: 0 10px;
+  margin: 2% 1%;
   position: relative;
+  height: 32vh;
 }
 .box img {
   width: 230px;
@@ -106,15 +120,15 @@ h1 {
 .box i {
   width: 50px;
   height: 50px;
-  background: #ed277f;
+  background: #e41c43;
   color: #ffffff;
   border-radius: 25px;
   text-align: center;
   line-height: 50px;
   font-size: 1.4rem;
   position: absolute;
-  right: 20px;
-  top: 150px;
+  right: 15px;
+  top: 149px;
   box-shadow: 0 0 4px 2px rgba(80, 80, 80, 0.1);
   cursor: pointer;
   transition: all 0.3s;
@@ -126,14 +140,17 @@ h1 {
 
 .box h2 {
   margin-left: 20px;
+  font-size: 18px;
+  width: 54%;
 }
 .boxp {
   margin-left: 20px;
 }
 .btn-filter {
-  background-color: #715aff;
-  color: white;
+  background-color: white;
+  color: black;
   text-transform: uppercase;
+  border: 3px solid #e41c43;
 }
 .btn-precio {
   background-color: #55c1ff;
@@ -155,7 +172,7 @@ h1 {
   right: 0; */
     margin: 2%;
   }
-  .responsiveCart{
+  .responsiveCart {
     display: none;
   }
 }

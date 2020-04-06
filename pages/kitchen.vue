@@ -2,6 +2,8 @@
   div
     b-card(v-for="order in orders")
       b-table(:items="order.reservas")
+      hr
+      p {{order.total}}
 
 </template>
 

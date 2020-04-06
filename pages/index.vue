@@ -1,53 +1,82 @@
 <template>
   <div class="container">
-    <div>
-      <!-- <logo /> -->
+    <div class="flex">
       <h1 class="title">
-        burger-queen
+        BURGER QUEEN APP
       </h1>
+      <!-- <p>
+        Sistema diseñado con doble funcion que permite tomar los pedidos de los
+        clientes y enviar los pedidos a una interfaz para ser atendida por los
+        cocineros. Es una solucion funcional y flexible para administrar los
+        pedidos de los usuarios.
+      </p> -->
+      <div class="d-flex buttons">
+        <b-button class="btn-start">
+          <nuxt-link to="kitchen">COCINERO</nuxt-link>
+        </b-button>
+        <b-button class="btn-start">
+          <nuxt-link to="menu">MESERO</nuxt-link>
+        </b-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import Logo from "~/components/Logo.vue";
 
 export default {
+  layout: "without",
   components: {
     Logo
   }
-}
+};
 </script>
 
-<style>
+<style scoped>
+@import url("https://fonts.googleapis.com/css?family=Be+Vietnam&display=swap");
+* {
+  font-family: "Be Vietnam", sans-serif;
+}
 .container {
-  margin: 0 auto;
+  background-image: url("../assets/background/hamburguesa.jpg");
+  background-size: cover;
+  margin: 0;
   min-height: 100vh;
+  min-width: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
   text-align: center;
 }
-
 .title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
+  font-weight: 500;
+  font-size: 46px;
+  color: white;
   letter-spacing: 1px;
+  margin-bottom: 12%;
+}
+.flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40%;
+  padding: 2%;
 }
 
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
+.buttons {
+  width: 100%;
+  justify-content: center;
+  justify-content: space-evenly;
 }
 
-.links {
-  padding-top: 15px;
+.btn-start {
+  align-self: center;
+  background-color: #ffc107;
+  /* font-size: 20px;
+  padding: 2% 4%; */
+}
+.btn-start:hover {
+  background-color: #d39e00;
 }
 </style>

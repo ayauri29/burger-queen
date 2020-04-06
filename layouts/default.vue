@@ -4,8 +4,8 @@
       <div class="main-links">
         <nuxt-link to="/">Home Page</nuxt-link>
         <div @click="logout" v-if="loggedIn" class="logout-link">Logout</div>
-        <nuxt-link v-else to="login">Login</nuxt-link>
-        <nuxt-link to="secret">Secret</nuxt-link>
+        <!-- <nuxt-link v-else to="login">Login</nuxt-link> -->
+        <!-- <nuxt-link to="secret">Secret</nuxt-link> -->
         <nuxt-link to="kitchen">Cocina</nuxt-link>
       </div>
     </div>
@@ -56,7 +56,7 @@ export default {
 
 }
 .main{
-  background-color: #102E4A;
+  background-color: #e41c43;
   /* margin: 20px; */
   display: flex;
   align-items: center;
@@ -69,6 +69,11 @@ export default {
   margin: 10px 20px;
   display: flex;
   justify-content: space-around;
+  color: white;
+}
+a{
+  color: white;
+  text-decoration: none;
 }
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',

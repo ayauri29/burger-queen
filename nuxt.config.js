@@ -58,10 +58,6 @@ export default {
    */
   axios: {},
   ...routerBase,
-  router: {
-    middleware: "pages"
-    //base: '/examples/vuegl/'
-  },
   /*
    ** Build configuration
    */

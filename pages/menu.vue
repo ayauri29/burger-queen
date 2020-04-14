@@ -15,8 +15,9 @@
           //- em(slot="footer")
           //-   .d-flex
           //-     b-button(@click="addCart(prod, `btn-${prod.nombre}`)") Add to cart
+    hr
     .reserve
-      Reserve(:reserva="cart")
+      Reserve(:reserva="cart" :num="orders.length")
 
 </template>
 
@@ -24,6 +25,17 @@
 import { mapActions, mapGetters } from "vuex";
 import { StoreDB } from "../plugins/firebase";
 import Reserve from "../components/reserve";
+// import firebase from 'firebase/app'
+// import 'firebase/firestore'
+// import config from "../plugins/firebase";
+
+// if (!firebase.apps.length) {
+//    firebase.initializeApp(DB_CONFIG);
+// }
+// let db = firebase.initializeApp(config).firestore();
+// let db = app.database();
+// let ordenesRef = db.ref("ordenes");
+
 export default {
   components: {
     Reserve
@@ -44,8 +56,18 @@ export default {
           prodArray.push(doc.data());
         });
       });
+
+    let orderArray = [];
+    await StoreDB.collection("ordenes")
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(function(doc) {
+          orderArray.push(doc.data());
+        });
+      });
     return {
-      breakfast: prodArray
+      breakfast: prodArray,
+      orders: orderArray
     };
   },
   mounted() {

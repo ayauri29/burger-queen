@@ -1,5 +1,7 @@
 <template lang="pug">
-  b-card(header="Pedido")
+  //- b-card(:header='`Orden N° ${num+1}`')
+  div
+    p Orden N° {{num + 1}}
     label Nombre:
       b-form-input(v-model="cliente")
     b-table(v-if="reserva.length > 0" :items="reservas" :fields="fields")
@@ -16,6 +18,8 @@
         p S/. {{data.item.subtotal}}.00
     p(v-else) Agrega el menú
     p {{total}}
+    p {{orders}}
+    //- p {{orders.length}}
     b-button(@click="sendOrder(reservas, cliente)") Enviar pedido
 
 
@@ -24,20 +28,21 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { StoreDB } from "../plugins/firebase";
+
 export default {
-  props: ["reserva"],
+  props: ["reserva", "num"],
   data() {
     return {
       fields: ["cantidad", "nombre", "precio", "subtotal"],
-      cliente: "",
+      cliente: ""
     };
   },
   computed: {
     ...mapGetters("cart", ["getCart"]),
     reservas() {
       const newArr = [...this.reserva];
-      newArr.forEach((element) => {
-        const duplicated = newArr.filter((el) => el.nombre === element.nombre);
+      newArr.forEach(element => {
+        const duplicated = newArr.filter(el => el.nombre === element.nombre);
         element.cantidad = duplicated.length;
         element.subtotal = element.cantidad * element.precio;
       });
@@ -45,38 +50,50 @@ export default {
       return this.getUniqueListBy(newArr, "nombre");
     },
     total() {
-      return this.reserva.reduce(function (acc, obj) {
+      return this.reserva.reduce(function(acc, obj) {
         return acc + obj.subtotal;
       }, 0);
-    },
+    }
   },
   methods: {
     getUniqueListBy(arr, key) {
-      return [...new Map(arr.map((item) => [item[key], item])).values()];
+      return [...new Map(arr.map(item => [item[key], item])).values()];
     },
     addQty(item) {
-      console.log(item, 'it')
+      console.log(item, "it");
       // item.cantidad = parseInt(parseInt(item.cantidad) + 1)
-      item.subtotal = item.cantidad * item.precio
+      item.subtotal = item.cantidad * item.precio;
       // console.log(item, this.dataReserve, "item");
     },
     sendOrder(reservas, cliente) {
-      console.log(reservas,cliente)
+      console.log(reservas, cliente);
       StoreDB.collection("ordenes")
-        .add({
+        .doc(`reserva${this.num + 1}`)
+        .set({
           reservas: reservas,
           cliente: cliente,
           total: this.total,
-          estado: 'PENDIENTE'
+          estado: "PENDIENTE",
+          code: `reserva${this.num + 1}`
         })
-        .then(function (docRef) {
-          console.log("Document written with ID: ", docRef.id);
-        })
-        .catch(function (error) {
-          console.error("Error adding document: ", error);
+        .then(function() {
+          console.log("Document successfully written!");
         });
-    },
-  },
+      // StoreDB.collection("ordenes")
+      //   .add({
+      //     reservas: reservas,
+      //     cliente: cliente,
+      //     total: this.total,
+      //     estado: 'PENDIENTE'
+      //   })
+      //   .then(function (docRef) {
+      //     console.log("Document written with ID: ", docRef.id);
+      //   })
+      //   .catch(function (error) {
+      //     console.error("Error adding document: ", error);
+      //   });
+    }
+  }
   // watch: {
   //   'reserva': {
   //     handler (newValue, oldValue) {

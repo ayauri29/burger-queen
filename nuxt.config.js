@@ -38,6 +38,7 @@ export default {
    */
 
   plugins: ["~/plugins/firebase"],
+  // , "~/plugins/vuefire"
   /*
    ** Nuxt.js dev-modules
    */

@@ -1,6 +1,10 @@
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import 'firebase/firestore'
+import Vue from 'vue'
+import { firestorePlugin } from 'vuefire'
+
+Vue.use(firestorePlugin)
 
 const firebaseConfig = {
   apiKey: "AIzaSyDgVrlcMVJ14-pV9bm14iM3YZsQFbz15dw",
@@ -14,7 +18,7 @@ const firebaseConfig = {
 // Initialize Firebase
 let app = null;
 if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
+  app = firebase.initializeApp(firebaseConfig);
 }
 export const StoreDB = firebase.firestore()
 export default firebase;

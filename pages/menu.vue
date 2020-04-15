@@ -2,22 +2,22 @@
 .container
   .d-flex
     .container-menu
-      h1 MENÚ
+      //- h1 MENÚ
       .d-flex.div-filters
         b-button.btn-filter(v-for="filter in filters" @click="filterType(filter)") {{filter}}
-      .d-flex.flex-wrap
+      .d-flex.flex-wrap.justify-content-center
         .box(v-for="prod in prodFilters")
           img.widthImg(:src="prod.imagen")
           i(@click="addCart(prod, `btn-${prod.nombre}`)") +
           h2 {{prod.nombre}}
-          p $ {{prod.precio}}.00
+          p.p-price $ {{prod.precio}}.00
             //- b-button.btn-precio $ {{prod.precio}}.00
           //- em(slot="footer")
           //-   .d-flex
           //-     b-button(@click="addCart(prod, `btn-${prod.nombre}`)") Add to cart
     hr
     .reserve
-      Reserve(:reserva="cart" :num="orders.length")
+      Reserve.reserve_table(:reserva="cart" :num="orders.length")
 
 </template>
 
@@ -116,6 +116,7 @@ export default {
   /* background-color: #292929; */
   margin: 0;
   min-width: 100%;
+  height: 90vh;
 }
 .container-menu {
   width: 60%;
@@ -147,9 +148,10 @@ h1 {
   border-radius: 25px;
   text-align: center;
   line-height: 50px;
-  font-size: 1.4rem;
+  font-size: 1.8rem;
   position: absolute;
   right: 15px;
+  font-style: initial;
   top: 149px;
   box-shadow: 0 0 4px 2px rgba(80, 80, 80, 0.1);
   cursor: pointer;
@@ -170,9 +172,9 @@ h1 {
 }
 .btn-filter {
   background-color: white;
-  color: black;
+  color: #e41c43;
   text-transform: uppercase;
-  border: 3px solid #e41c43;
+  border: 1.1px solid #000000;
 }
 .btn-precio {
   background-color: #55c1ff;
@@ -185,14 +187,21 @@ h1 {
 .reserve {
   display: none;
 }
-
+.reserve_table {
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+  padding: 5%;
+}
+.p-price{
+  text-align: center;
+}
 @media screen and (min-width: 764px) {
   .reserve {
     display: block;
     width: 40%;
-    /* position: fixed;
-  right: 0; */
-    margin: 2%;
+    /* margin: 2%; */
+    background-color: #ffeeba;
   }
   .responsiveCart {
     display: none;

@@ -1,9 +1,14 @@
 <template lang="pug">
   //- b-card(:header='`Orden N° ${num+1}`')
   div
-    p Orden N° {{num + 1}}
-    label Nombre:
+    p ORDEN N° {{num + 1}}
+    hr
+    div(class="d-flex align-items-center justify-content-between")
+      label Nombre:
       b-form-input(v-model="cliente")
+    div(class="d-flex align-items-center justify-content-between mb-2")
+      label Mesa:
+      b-form-input(v-model="mesa")
     b-table(v-if="reserva.length > 0" :items="reservas" :fields="fields")
       //- template(v-slot:cell(cantidad)="data")
       //-   b-form-input(v-model="data.item.cantidad" type="number" @change="addQty(data.item)")
@@ -16,11 +21,13 @@
         p S/. {{data.item.precio}}.00
       template(v-slot:cell(subtotal)="data")
         p S/. {{data.item.subtotal}}.00
-    p(v-else) Agrega el menú
-    p {{total}}
+    div.no-results(v-else)
+      img(src="https://img.icons8.com/dusk/128/000000/hamburger.png")
+      p Agrega los pedidos
+    p(v-if="reserva.length > 0") Total: {{total}}
     p {{orders}}
     //- p {{orders.length}}
-    b-button(@click="sendOrder(reservas, cliente)") Enviar pedido
+    b-button.btn-send(@click="sendOrder(reservas, cliente)") Enviar pedido a cocina
 
 
 </template>
@@ -113,5 +120,19 @@ export default {
 <style scoped>
 .card {
   width: 100%;
+}
+.btn-send{
+  background-color: #e41c43;
+}
+p:nth-child(1){
+  margin: 0;
+}
+.form-control{
+  width: 50%;
+}
+.no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

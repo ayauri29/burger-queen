@@ -1,6 +1,6 @@
 <template lang="pug">
 .container
-  .d-flex
+  .d-flex.main-page
     .container-menu
       //- h1 MENÚ
       .d-flex.div-filters
@@ -18,6 +18,12 @@
     hr
     .reserve
       Reserve.reserve_table(:reserva="cart" :num="orders.length")
+    .reserve-mod(v-if="cart.length > 0")
+      p(v-if="cart.length > 1") Tienes {{cart.length}} pedidos para enviar a la cocina
+      p(v-if="cart.length === 1") Tienes {{cart.length}} pedidos para enviar a la cocina
+      b-button(v-b-modal.modal-1) Ver mis órdenes
+      b-modal(id="modal-1" title="BootstrapVue")
+        Reserve.reserve_table(:reserva="cart" :num="orders.length")
 
 </template>
 
@@ -117,13 +123,15 @@ export default {
   margin: 0;
   min-width: 100%;
   height: 90vh;
+  padding: 0;
 }
 .container-menu {
-  width: 60%;
+  width: 100%;
 }
 .div-filters {
   margin: 4%;
   justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 h1 {
   text-align: center;
@@ -193,10 +201,31 @@ h1 {
   height: 90vh;
   padding: 5%;
 }
-.p-price{
+.p-price {
   text-align: center;
 }
+.main-page {
+  flex-direction: column;
+}
+.reserve-mod {
+  border-top: 1px solid #e41c43;
+  display: block;
+  position: fixed;
+  bottom: 0;
+  background-color: white;
+  width: 100%;
+  padding: 4%;
+}
 @media screen and (min-width: 764px) {
+  .reserve-mod {
+    display: none;
+  }
+  .container-menu {
+    width: 60%;
+  }
+  .main-page {
+    flex-direction: row;
+  }
   .reserve {
     display: block;
     width: 40%;
